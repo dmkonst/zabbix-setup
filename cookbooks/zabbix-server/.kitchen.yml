@@ -1,0 +1,23 @@
+---
+driver:
+  name: vagrant
+  network:
+    - ["forwarded_port", {guest: 80, host: 8080}]
+
+provisioner:
+  name: chef_solo
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: ubuntu-16.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[zabbix-server::default]
+    verifier:
+      inspec_tests:
+        - test/smoke/default
+    attributes:

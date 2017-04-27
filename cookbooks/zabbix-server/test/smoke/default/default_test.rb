@@ -1,0 +1,26 @@
+# # encoding: utf-8
+
+# Inspec test for recipe zabbix-server::default
+
+# The Inspec reference, with examples and extensive documentation, can be
+# found at http://inspec.io/docs/reference/resources/
+
+# This is an example test, replace it with your own test.
+describe port(80) do
+  it { should be_listening }
+end
+
+#describe docker_container(name: 'mysql-server') do
+#  it { should exist }
+#  it { should be_running }
+#end
+
+#describe docker_container(name: 'zabbix-server') do
+#  it { should exist }
+#  it { should be_running }
+#end
+
+#describe docker_container(name: 'zabbix-web') do
+#  it { should exist }
+#  it { should be_running }
+#end
