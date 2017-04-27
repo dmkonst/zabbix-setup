@@ -10,5 +10,8 @@ private-registry cookbook contains 2 roles:
 
 zabbix-agent cookbook contains role zabbix-agent which should pull image from configured private registry (made by role private-registry) and setup docker container with zabbix-agent ready for server monitoring (using privileged mode for container)
 
-TODO: 
+NOTE:
+change password for your mysql-db in data_bags/mysql/zabbix_db.json
+
+TODO:
 add recipe in zabbix-server cookbook to create autodiscovery action.
