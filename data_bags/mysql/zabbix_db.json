@@ -1,0 +1,6 @@
+{
+  "id": "zabbix_db",
+  "user": "root",
+  "db": "zabbix",
+  "password": "securePassword"
+}

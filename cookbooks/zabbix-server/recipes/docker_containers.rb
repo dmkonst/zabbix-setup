@@ -3,14 +3,15 @@
 # Recipe:: docker_containers
 #
 # Copyright:: 2017, Dmytro Konstantynov, All Rights Reserved.
-# db_info = data_bag_item('mysql', 'zabbix_db')
+
+zabbix_db = data_bag_item('zabbix_db', 'zabbix_db')
 
 # run mysql container
 docker_container 'mysql-server' do
   repo 'mysql/mysql-server'
   env [
-    'MYSQL_ROOT_PASSWORD=rgCHcYuXGcqkfR',
-    'MYSQL_DATABASE=zabbix',
+    'MYSQL_ROOT_PASSWORD=' + zabbix_db['password'],
+    'MYSQL_DATABASE=' + zabbix_db['db'],
   ]
   restart_policy 'always'
   action :run_if_missing
@@ -20,8 +21,8 @@ end
 docker_container 'zabbix-server' do
   repo 'zabbix/zabbix-server-mysql'
   env [
-    'MYSQL_USER=root',
-    'MYSQL_PASSWORD=rgCHcYuXGcqkfR',
+    'MYSQL_USER=' + zabbix_db['user'],
+    'MYSQL_PASSWORD=' + zabbix_db['password'],
     'DB_SERVER_HOST=mysql-server',
   ]
   links ['mysql-server:mysql']
@@ -34,8 +35,8 @@ end
 docker_container 'zabbix-web' do
   repo 'zabbix/zabbix-web-nginx-mysql'
   env [
-    'MYSQL_USER=root',
-    'MYSQL_PASSWORD=rgCHcYuXGcqkfR',
+    'MYSQL_USER=' + zabbix_db['user'],
+    'MYSQL_PASSWORD=' + zabbix_db['password'],
     'ZBX_SERVER_HOST=zabbix-server',
     'DB_SERVER_HOST=mysql-server',
   ]
