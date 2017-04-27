@@ -12,6 +12,7 @@ zabbix-agent cookbook contains role zabbix-agent which should pull image from co
 
 NOTE:
 change password for your mysql-db in data_bags/mysql/zabbix_db.json
+zabbix-server cookbook uses data bag called zabbix_db , make sure you are using same data bag, or don't forget to change recipes in the cookbook accordingly to your data bag name
 
 TODO:
 add recipe in zabbix-server cookbook to create autodiscovery action.
