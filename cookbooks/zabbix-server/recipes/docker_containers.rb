@@ -8,6 +8,7 @@ zabbix_db = data_bag_item('zabbix_db', 'zabbix_db')
 
 # run mysql container
 docker_container 'mysql-server' do
+  sensitive true
   repo 'mysql/mysql-server'
   env [
     'MYSQL_ROOT_PASSWORD=' + zabbix_db['password'],
@@ -19,6 +20,7 @@ end
 
 # run zabbix-server container
 docker_container 'zabbix-server' do
+  sensitive true
   repo 'zabbix/zabbix-server-mysql'
   env [
     'MYSQL_USER=' + zabbix_db['user'],
@@ -33,6 +35,7 @@ end
 
 # run zabbix-web container
 docker_container 'zabbix-web' do
+  sensitive true
   repo 'zabbix/zabbix-web-nginx-mysql'
   env [
     'MYSQL_USER=' + zabbix_db['user'],

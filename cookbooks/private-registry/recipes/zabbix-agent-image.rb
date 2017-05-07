@@ -3,6 +3,7 @@
 # Recipe:: zabbix_agent_image
 #
 # Copyright:: 2017, Dmytro Konstantynov, All Rights Reserved.
+include_recipe 'ipaddr_extensions'
 
 # pull zabbix-agent image
 docker_image 'zabbix/zabbix-agent' do
