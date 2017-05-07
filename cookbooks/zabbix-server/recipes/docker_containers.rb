@@ -8,6 +8,7 @@ zabbix_db = data_bag_item('zabbix_db', 'zabbix_db')
 
 # run mysql container
 docker_container 'mysql-server' do
+  sensitive true
   repo 'mysql/mysql-server'
   env [
     'MYSQL_ROOT_PASSWORD=' + zabbix_db['password'],
@@ -17,8 +18,16 @@ docker_container 'mysql-server' do
   action :run_if_missing
 end
 
+# grants privileges to 172.17.0.* hosts
+execute 'mysql-grant-zabbixserver' do
+  retries 5
+  retry_delay 5
+  command 'docker exec mysql-server mysql -u' + zabbix_db['user'] + ' -p' + zabbix_db['password'] + ' ' + zabbix_db['db'] + ' --execute="grant all privileges on ' + zabbix_db['db'] + '.* to root@\'172.17.0.%\' identified by \'' + zabbix_db['password'] + '\'"'
+end
+
 # run zabbix-server container
 docker_container 'zabbix-server' do
+  sensitive true
   repo 'zabbix/zabbix-server-mysql'
   env [
     'MYSQL_USER=' + zabbix_db['user'],
@@ -33,6 +42,7 @@ end
 
 # run zabbix-web container
 docker_container 'zabbix-web' do
+  sensitive true
   repo 'zabbix/zabbix-web-nginx-mysql'
   env [
     'MYSQL_USER=' + zabbix_db['user'],
@@ -47,4 +57,10 @@ docker_container 'zabbix-web' do
   port '80:80'
   restart_policy 'always'
   action :run_if_missing
+end
+
+execute 'wait-for-zabbix' do
+  retries 5
+  retry_delay 5
+  command 'docker logs zabbix-server | grep -q "entered RUNNING state"'
 end
