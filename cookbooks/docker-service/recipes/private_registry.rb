@@ -4,6 +4,7 @@
 #
 # Copyright:: 2017, Dmytro Konstantynov, All Rights Reserved.
 
+include_recipe '::docker_service'
 
 # find node with private-registry role and add attribute
 registry = search(:node, 'role:private-registry').first
