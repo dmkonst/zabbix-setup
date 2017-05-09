@@ -4,10 +4,6 @@
 #
 # Copyright:: 2017, Dmytro Konstantynov, All Rights Reserved.
 
-# find node with zabbix-server role and add attribute
-zabbix_server = search(:node, 'role:zabbix-server').first
-node.default['zabbix_server_ip'] = zabbix_server['privateaddress']
-
 # run container with zabbix-agent
 docker_container 'zabbix-agent' do
   repo node['private_registry_ip'] + ':5000/zabbix-agent'
