@@ -19,6 +19,7 @@ docker_container 'mysql-server' do
 end
 
 # grants privileges to 172.17.0.* hosts
+# need to have few retries, because mysql server takes some time to start
 execute 'mysql-grant-zabbixserver' do
   retries 5
   retry_delay 5
@@ -59,6 +60,7 @@ docker_container 'zabbix-web' do
   action :run_if_missing
 end
 
+# wait untill zabbix will start successfully
 execute 'wait-for-zabbix' do
   retries 5
   retry_delay 5
